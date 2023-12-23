@@ -8,3 +8,11 @@
 string tempvar = 'Enter_your_name_here';
 System.debug('Hello World!');
 System.debug('My name is ' + tempvar);
+
+Id currentUserId = UserInfo.getUserId();
+System.debug('USER ID::::: ' + currentUserId);
+List<Case> cases = [SELECT Id, Owner.Name, Owner_Index_Formula__c, Priority_Index_Formula__c, Priority FROM Case ORDER BY Owner_Index_Formula__c, Priority_Index_Formula__c];
+System.debug('SIZE:::::; ' + cases.size());
+for(Case c : cases) {
+    System.debug('RECORD:::::; ' + c + ' ' + c.Owner.Name + ' ' + ' ' + c.Priority);
+}
