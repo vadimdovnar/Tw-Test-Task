@@ -2,12 +2,13 @@ import { LightningElement, wire } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { updateRecord } from "lightning/uiRecordApi";
+import { refreshApex } from "@salesforce/apex";
 import { getPicklistValues } from "lightning/uiObjectInfoApi";
 import CASE_ID from "@salesforce/schema/Case.Id";
 import STATUS_FIELD from "@salesforce/schema/Case.Status";
 import getUserCases from '@salesforce/apex/ServiceCaseQueueService.getUserCases';
 
-import { refreshApex } from "@salesforce/apex";
+
 
 export default class ServiceCaseQueueFiltered extends NavigationMixin(LightningElement) {
     
@@ -20,6 +21,7 @@ export default class ServiceCaseQueueFiltered extends NavigationMixin(LightningE
     // ========================REACTIVE TOOLING:==========================
     @wire(getUserCases)
     wiredCases(result) {
+        console.log('DATA::::::: ' , result.data);
         this.isCaseStatusUpdating = true;
         if(result.data) {
             this.wiredCasesResult = result;
@@ -56,17 +58,24 @@ export default class ServiceCaseQueueFiltered extends NavigationMixin(LightningE
             },
         });
     }
+
     handlePicklistChange = async (event) => {
         const selectedValue = event.detail.value;
         const caseId = event.target.getAttribute('data-id');
+        const caseNumber = event.target.getAttribute('data-casenumber');
         try {
             await this.updateCaseStatus(selectedValue, caseId);
-            this.showToast('Success', 'Record updated successfully', 'success');
+            this.showNotification('Success', `Case Number "${caseNumber}" updated successfully, new value of Case Status is "${selectedValue}"`, 'success');
         } catch (error) {
-            this.showToast('Error', 'Error updating record', 'error');
+            this.showNotification('Error', `Case Number "${caseNumber}" was not updated successfully`, 'error');
             console.error('Error updating record:', error);
         }
     }
+
+    handleRefresh = async () => {
+        this.isCaseStatusUpdating = true;
+        await this.refreshData();
+    };
     // =====================================================================
 
     // ================================ASYNC================================
@@ -76,15 +85,25 @@ export default class ServiceCaseQueueFiltered extends NavigationMixin(LightningE
         fields[CASE_ID.fieldApiName] = caseId;
         fields[STATUS_FIELD.fieldApiName] = newStatusValue;
         await updateRecord( {fields} );
-        return refreshApex(this.wiredCasesResult);
+        await this.refreshData();
+    }
+    async refreshData() {
+        return new Promise((resolve, reject) => {
+            refreshApex(this.wiredCasesResult)
+                .then(() => resolve())
+                .catch(error => reject(error))
+                .finally(() => {
+                    this.isCaseStatusUpdating = false
+                });
+        });
     }
     // =====================================================================
-    showToast(title, message, variant) {
-        const evt = new ShowToastEvent({
+    showNotification(title, message, variant) {
+        const event = new ShowToastEvent({
             title: title,
             message: message,
             variant: variant,
         });
-        this.dispatchEvent(evt);
+        this.dispatchEvent(event);
     }
 }

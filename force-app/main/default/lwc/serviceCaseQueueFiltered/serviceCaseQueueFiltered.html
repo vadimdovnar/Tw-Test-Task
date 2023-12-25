@@ -1,51 +1,64 @@
 <template>
   <div class="slds-card">
-    <div class="slds-card__body">
-      <template if:true={error}>
-        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
-          <span class="slds-assistive-text">Error</span>
-          <span class="slds-icon_container slds-icon-utility-error slds-m-right_small slds-no-flex slds-align-top" title="Error">
-            <lightning-icon icon-name="utility:error" size="small" alternative-text="Error"></lightning-icon>
-          </span>
-          <h2>{error.body.message}</h2>
-        </div>
-      </template>
-      <template if:true={isCaseStatusUpdating}>
-        <div class="slds-spinner_container">
-            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
-        </div>
-      </template>
-      <template if:true={cases}>
-        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
-          <thead>
-            <tr class="slds-text-title_caps">
-              <th scope="col">#</th>
-              <th scope="col">Case Number</th>
-              <th scope="col">Assignee</th>
-              <th scope="col">Case Status</th>
-              <th scope="col">Priority</th>
-              <th scope="col">Origin</th>
+    <header class="slds-card__header">
+      <div class="slds-m-bottom_small slds-float_right">
+        <lightning-button-icon icon-name="utility:refresh" alternative-text="Refresh" variant="bare" size="large" onclick={handleRefresh}></lightning-button-icon>
+      </div>
+    </header>
+
+    <template if:true={error}>
+      <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+        <span class="slds-assistive-text">Error</span>
+        <span class="slds-icon_container slds-icon-utility-error slds-m-right_small slds-no-flex slds-align-top" title="Error">
+          <lightning-icon icon-name="utility:error" size="small" alternative-text="Error"></lightning-icon>
+        </span>
+        <h2>{error.body.message}</h2>
+      </div>
+    </template>
+
+    <template if:true={isCaseStatusUpdating}>
+      <div class="slds-spinner_container">
+        <lightning-spinner role="status" alternative-text="Loading" size="large"></lightning-spinner>
+      </div>
+    </template>
+
+    <template if:true={cases}>
+      <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+        <thead>
+          <tr class="slds-text-title_caps">
+            <th scope="col">#</th>
+            <th scope="col">Case Number</th>
+            <th scope="col">Assignee</th>
+            <th scope="col">Case Status</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Origin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={cases.data} for:item="caseRecord">
+            <tr key={caseRecord.Id}>
+              <td>#</td>
+              <td>
+                <a data-id={caseRecord.Id} onclick={handleNavigateToCaseRecordView}> {caseRecord.CaseNumber} </a>
+              </td>
+              <td>{caseRecord.Owner.Name}</td>
+              <td>
+                <lightning-combobox
+                  class="slds-align-middle slds-m-bottom_small slds-size_7-of-12"
+                  data-id={caseRecord.Id}
+                  data-casenumber={caseRecord.CaseNumber}
+                  value={caseRecord.Status}
+                  options={caseStatusPicklistValues}
+                  onchange={handlePicklistChange}
+                >
+                </lightning-combobox>
+              </td>
+              <td>{caseRecord.Priority}</td>
+              <td>{caseRecord.Origin}</td>
             </tr>
-          </thead>
-          <tbody>
-            <template for:each={cases.data} for:item="caseRecord">
-              <tr key={caseRecord.Id}>
-                <td>#</td>
-                <td>
-                  <a data-id={caseRecord.Id} onclick={handleNavigateToCaseRecordView}> {caseRecord.CaseNumber} </a>
-                </td>
-                <td>{caseRecord.Owner.Name}</td>
-                <td>
-                    <lightning-combobox class="slds-align-middle" data-id={caseRecord.Id} value={caseRecord.Status} options={caseStatusPicklistValues} onchange={handlePicklistChange}> </lightning-combobox>
-                </td>
-                <td>{caseRecord.Priority}</td>
-                <td>{caseRecord.Origin}</td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
-      </template>
-    </div>
+          </template>
+        </tbody>
+      </table>
+    </template>
   </div>
 </template>
-
