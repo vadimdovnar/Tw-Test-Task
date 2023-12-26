@@ -1,5 +1,5 @@
 @isTest
-public with sharing class ServiceCaseQueueServiceTest {
+public class ServiceCaseQueueServiceTest {
     @isTest
     static void getUserCasesPositiveTest() {
         List<User> testUsers = TestDataFactory.createTestUsers(1);
