@@ -16,3 +16,8 @@ System.debug('SIZE:::::; ' + cases.size());
 for(Case c : cases) {
     System.debug('RECORD:::::; ' + c + ' ' + c.Owner.Name + ' ' + ' ' + c.Priority);
 }
+
+List<Case> result = AccountCasesPdfCtrl.getAccountCasesPrevWeek();
+for (Case c : result) {
+    System.debug('DATA::::::: ' + c.Account.Name + ' ' + c.Account.Owner.Name + ' ' + c.CaseNumber + ' ' + c.CreatedDate);
+}
