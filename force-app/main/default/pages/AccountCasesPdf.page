@@ -1,0 +1,84 @@
+<apex:page controller="AccountCasesPdfCtrl" 
+            renderAs="pdf" cache="false" 
+            showHeader="false" 
+            sidebar="false" 
+            applyHtmlTag="false"
+            applyBodyTag="false">
+    <head>
+        <style type="text/css" media="print">
+            body {
+                font-family: 'Arial', sans-serif;
+                font-size: 13px; /* Increased font size by 3px */
+            }
+
+            h1 {
+                color: #333;
+                border-bottom: 2px solid #333;
+                padding-bottom: 13px; /* Increased padding by 3px */
+                font-size: 19px; /* Increased font size by 3px */
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 23px; /* Increased margin by 3px */
+                font-size: 13px; /* Increased font size by 3px */
+            }
+
+            th, td {
+                border: 1px solid #ddd;
+                padding: 11px; /* Increased padding by 3px */
+                text-align: left;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+
+            td.priority-High {
+                color: white;
+                background-color: #ff6666; /* Adjust the color to be less saturated */
+            }
+
+            td.priority-Medium {
+                color: black;
+                background-color: #ffd966; /* Adjust the color to be less saturated */
+            }
+
+            td.priority-Low {
+                color: white;
+                background-color: #66cc66; /* Adjust the color to be less saturated */
+            }
+        </style>
+    </head>
+        
+    
+    <body>
+        <h1>Last Week Cases</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Account Name</th>
+                    <th>Account Owner Name</th>
+                    <th>Case Number</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Origin</th>
+                </tr>
+            </thead>
+            <tbody>
+                <apex:repeat value="{!accountCasesPrevWeek}" var="case">
+                    <tr>
+                        <td>{!case.Account.Name}</td>
+                        <td>{!case.Account.Owner.Name}</td>
+                        <td>{!case.CaseNumber}</td>
+                        <td>{!case.Status}</td>
+                        <td class="priority-{!case.Priority}">{!case.Priority}</td>
+                        <td>{!case.Origin}</td>
+                    </tr>
+                </apex:repeat>
+            </tbody>
+        </table>
+    </body>
+</apex:page>

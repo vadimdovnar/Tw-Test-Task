@@ -1,5 +1,6 @@
 public without sharing class AccountCasesPdfCtrl {
-  public static List<Case> getAccountCasesPrevWeek() {
+    
+  public List<Case> getAccountCasesPrevWeek() {
     List<Case> cases = [
       SELECT Id, Account.Name, Account.Owner.Name, CaseNumber, Status, Priority, Origin
       FROM Case
