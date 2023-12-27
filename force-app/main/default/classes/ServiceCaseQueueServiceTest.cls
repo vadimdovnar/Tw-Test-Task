@@ -4,7 +4,7 @@ public class ServiceCaseQueueServiceTest {
     static void getUserCasesPositiveTest() {
         List<User> testUsers = TestDataFactory.createTestUsers(1);
         List<Case> testCases = TestDataFactory.createTestCases(25, testUsers[0].Id);
-
+        
         System.runAs(testUsers[0]) {
             List<Case> result = ServiceCaseQueueService.getUserCases();
             System.assertEquals(25, result.size());

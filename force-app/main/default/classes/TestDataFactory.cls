@@ -29,7 +29,7 @@ public class TestDataFactory {
     List<Case> testCases = new List<Case>();
 
     for (Integer i = 0; i < numberOfCases; i++) {
-      Case testCase = new Case(Subject = 'Test Case ' + i, OwnerId = ownerId, Status = 'New', Priority = 'High', Origin = 'Web');
+      Case testCase = new Case(Subject = 'Test Case ' + i, OwnerId = ownerId, Status = 'New', Priority = 'Low', Origin = 'Web');
       testCases.add(testCase);
     }
 

@@ -8,26 +8,26 @@
         <style type="text/css" media="print">
             body {
                 font-family: 'Arial', sans-serif;
-                font-size: 13px; /* Increased font size by 3px */
+                font-size: 13px;
             }
 
             h1 {
                 color: #333;
                 border-bottom: 2px solid #333;
-                padding-bottom: 13px; /* Increased padding by 3px */
-                font-size: 19px; /* Increased font size by 3px */
+                padding-bottom: 13px;
+                font-size: 19px;
             }
 
             table {
                 width: 100%;
                 border-collapse: collapse;
-                margin-top: 23px; /* Increased margin by 3px */
-                font-size: 13px; /* Increased font size by 3px */
+                margin-top: 23px;
+                font-size: 13px;
             }
 
             th, td {
                 border: 1px solid #ddd;
-                padding: 11px; /* Increased padding by 3px */
+                padding: 11px;
                 text-align: left;
             }
 
@@ -37,17 +37,17 @@
 
             td.priority-High {
                 color: white;
-                background-color: #ff6666; /* Adjust the color to be less saturated */
+                background-color: #ff6666;
             }
 
             td.priority-Medium {
                 color: black;
-                background-color: #ffd966; /* Adjust the color to be less saturated */
+                background-color: #ffd966;
             }
 
             td.priority-Low {
                 color: white;
-                background-color: #66cc66; /* Adjust the color to be less saturated */
+                background-color: #66cc66;
             }
         </style>
     </head>
